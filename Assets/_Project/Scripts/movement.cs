@@ -7,15 +7,16 @@ using System;
 public class movement : MonoBehaviour
 {
     [SerializeField] playerInput eventPublisher;
-
     [SerializeField] int type;
+    public float speed;
+    private Rigidbody2D rb2d;
     // Start is called before the first frame update
     void Start()
     {
         //eventPublisher.OnWasdPressed += PrintWasd;
         eventPublisher.OnWasdPressedWithEventArgs += PrintWasd;
         eventPublisher.OnSpacePressed += PrintSpace;
-
+        rb2d = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
@@ -37,7 +38,7 @@ public class movement : MonoBehaviour
         if (type == 1)
         {
             Debug.Log("Jumping");
-            this.transform.Translate
+           // this.transform.Translate;
         }
     }
 }
