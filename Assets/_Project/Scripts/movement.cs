@@ -9,14 +9,24 @@ public class movement : MonoBehaviour
     [SerializeField] playerInput eventPublisher;
     [SerializeField] int type;
     public float speed;
+    public float jumpPower;
+    public bool reversedGrav = false;
     private Rigidbody2D rb2d;
+
+
     // Start is called before the first frame update
     void Start()
     {
         //eventPublisher.OnWasdPressed += PrintWasd;
         eventPublisher.OnWasdPressedWithEventArgs += PrintWasd;
         eventPublisher.OnSpacePressed += PrintSpace;
+       
         rb2d = GetComponent<Rigidbody2D>();
+        eventPublisher.OnW += GravUp;
+        eventPublisher.OnA += GoLeft;
+        eventPublisher.OnS += GravDown;
+        eventPublisher.OnD += GoRight;
+        eventPublisher.OnSpace += JumpAction;
     }
 
     // Update is called once per frame
@@ -41,4 +51,16 @@ public class movement : MonoBehaviour
            // this.transform.Translate;
         }
     }
+
+    //all of main movment
+    void GravUp(object sender, EventArgs e) {
+        rb2d.gravityScale = -1;
+    }
+    void GravDown(object sender, EventArgs e) {
+        rb2d.gravityScale = 1;
+    }
+    void GoLeft(object sender, EventArgs e) { }
+    void GoRight(object sender, EventArgs e) { }
+    void JumpAction(object sender, EventArgs e) { }
+
 }

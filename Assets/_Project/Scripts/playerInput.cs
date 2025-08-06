@@ -13,8 +13,6 @@ public class playerInput : MonoBehaviour
 
     }
 
-
-
     public event EventHandler OnWasdPressed;
 
     public class OnWasdPressedEventArgs : EventArgs
@@ -24,6 +22,15 @@ public class playerInput : MonoBehaviour
 
     }
 
+
+
+    //main events being used
+    public event EventHandler OnW;
+    public event EventHandler OnA;
+    public event EventHandler OnS;
+    public event EventHandler OnD;
+    public event EventHandler OnSpace;
+    public bool GravityUp = false; 
     void Start()
     {
 
@@ -121,12 +128,71 @@ public class playerInput : MonoBehaviour
             }
 
         }
+        
+        //main game movement
 
+        //jump
         if (Input.GetKeyDown(KeyCode.Space))
         {
             // Debug.Log("space pressed");
             OnSpacePressed?.Invoke(this, EventArgs.Empty);
+
+            if (GravityUp == false) { 
+            //normal gravity
+            
+            } else {
+            //reversed gravity
+
+            }
         }
 
+        //Gravity up
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+           if (GravityUp == false) {
+                //code
+                GravityUp = true;
+                OnW?.Invoke(this, EventArgs.Empty);
+            } else {
+            //do nothing
+            }
+        }
+        //Gravity down
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+           if (GravityUp == false) {
+            //do nothing
+            } else {
+                //code
+                GravityUp = false;
+                OnS?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        //move left
+        if (Input.GetKey(KeyCode.A))
+        {
+            if (Input.GetKey(KeyCode.A) && Input.GetKeyUp(KeyCode.D)) {
+            //dont move
+            }
+            else
+            {
+                // OnWasdPressed?.Invoke(this, EventArgs.Empty);
+                OnWasdPressedWithEventArgs?.Invoke(this, new OnWasdPressedEventArgs { PressedKey = "Holding A" });
+            }
+        }
+        //move right
+        if (Input.GetKey(KeyCode.D))
+        {
+            if (Input.GetKey(KeyCode.D) && Input.GetKeyUp(KeyCode.A))
+            {
+                //dont move
+            }
+            else
+            {
+                // OnWasdPressed?.Invoke(this, EventArgs.Empty);
+                OnWasdPressedWithEventArgs?.Invoke(this, new OnWasdPressedEventArgs { PressedKey = "Holding D" });
+            }
+        }
     }
 }
