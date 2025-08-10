@@ -29,6 +29,7 @@ public class playerInput : MonoBehaviour
     public event EventHandler OnA;
     public event EventHandler OnS;
     public event EventHandler OnD;
+    public event EventHandler OnStop;
     public event EventHandler OnSpace;
     public bool GravityUp = false; 
     void Start()
@@ -177,8 +178,7 @@ public class playerInput : MonoBehaviour
             }
             else
             {
-                // OnWasdPressed?.Invoke(this, EventArgs.Empty);
-                OnWasdPressedWithEventArgs?.Invoke(this, new OnWasdPressedEventArgs { PressedKey = "Holding A" });
+                OnA?.Invoke(this, EventArgs.Empty);
             }
         }
         //move right
@@ -190,9 +190,15 @@ public class playerInput : MonoBehaviour
             }
             else
             {
-                // OnWasdPressed?.Invoke(this, EventArgs.Empty);
-                OnWasdPressedWithEventArgs?.Invoke(this, new OnWasdPressedEventArgs { PressedKey = "Holding D" });
+                OnD?.Invoke(this, EventArgs.Empty);
             }
         }
+        //stop moving
+        if (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D))
+        {
+            OnStop?.Invoke(this, EventArgs.Empty);
+        }
+
+
     }
 }
