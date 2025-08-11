@@ -6,6 +6,9 @@ using System;
 
 public class TriggerA : MonoBehaviour
 {
+
+  //  public event EventHandler ;
+
     // Start is called before the first frame update
     void Start()
     {

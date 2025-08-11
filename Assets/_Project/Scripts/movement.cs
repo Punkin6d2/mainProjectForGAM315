@@ -8,11 +8,13 @@ public class movement : MonoBehaviour
 {
     [SerializeField] playerInput eventPublisher;
     [SerializeField] int type;
-    private float speed = 3;
-    private float jumpPower = 2;
+    private float speed = 5;
+    private float jumpPower = 3;
     private bool GravityUp = false;
     private Rigidbody2D rb2d;
-
+    private float checkpointLocationX = 1.02f; //defualt values for first room and testing
+    private float checkpointLocationY = 1.83f;
+    private Vector2 respawnLocation;
 
     // Start is called before the first frame update
     void Start()
@@ -28,6 +30,9 @@ public class movement : MonoBehaviour
         eventPublisher.OnD += GoRight;
         eventPublisher.OnSpace += JumpAction;
         eventPublisher.OnStop += noMove;
+
+       // eventPublisher.Checkpoint += getCheckpoint;
+     //   eventPublisher.Checkpoint += goCheckpoint;
     }
 
     // Update is called once per frame
@@ -64,12 +69,12 @@ public class movement : MonoBehaviour
     }
     void GoLeft(object sender, EventArgs e) {
         //A
-        Debug.Log("going left");
+        //Debug.Log("going left");
         rb2d.velocity = new Vector2(-1 * speed, rb2d.velocity.y);
     }
     void GoRight(object sender, EventArgs e) {
         //D
-        Debug.Log("going right");
+        //Debug.Log("going right");
         rb2d.velocity = new Vector2(1 * speed, rb2d.velocity.y);
     }
     void noMove(object sender, EventArgs e)
@@ -80,4 +85,33 @@ public class movement : MonoBehaviour
     
     }
 
+
+    /*
+        void getCheckpoint(object sender, EventArgs x, EventArgs y)
+        {
+            checkpointLocationX = x;
+            checkpointLocationY = y;
+        }
+        void goCheckpoint(object sender, EventArgs e)
+        {
+
+        } */
+
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("KillBox"))
+        {
+            Debug.Log("Player died! Teleport to " + respawnLocation);
+
+            //dont forget to change/reset gravity
+            //just save the gravity and then save it to what is at the moment 
+        }
+        if (other.CompareTag("Checkpoint"))
+        {
+           // Debug.Log("new checkpoint");
+            respawnLocation = other.transform.position;
+            Debug.Log("new checkpoint at " + respawnLocation);
+        }
+    }
 }

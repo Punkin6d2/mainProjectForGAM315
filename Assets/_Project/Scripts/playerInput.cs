@@ -31,7 +31,8 @@ public class playerInput : MonoBehaviour
     public event EventHandler OnD;
     public event EventHandler OnStop;
     public event EventHandler OnSpace;
-    public bool GravityUp = false; 
+    public bool GravityUp = false;
+    public event EventHandler onR;
     void Start()
     {
 
@@ -42,7 +43,7 @@ public class playerInput : MonoBehaviour
     void Update()
     {
         //all 3 "get keys" are here for animations in the fucture
-
+        /*
         //on press
         if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D))
         {
@@ -129,7 +130,7 @@ public class playerInput : MonoBehaviour
             }
 
         }
-        
+        */
         //main game movement
 
         //jump
