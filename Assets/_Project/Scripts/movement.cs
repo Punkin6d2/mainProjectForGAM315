@@ -7,14 +7,17 @@ using System;
 public class movement : MonoBehaviour
 {
     [SerializeField] playerInput eventPublisher;
+    [SerializeField] groundCheckDown groundDown;
+    [SerializeField] groundCheckUp groundUp;
     [SerializeField] int type;
     private float speed = 5;
-    private float jumpPower = 3;
+    private float jumpPower = 8;
     private bool GravityUp = false;
+    private int jumpCount = 2;
+    private int flipCount = 2;
     private Rigidbody2D rb2d;
-    private float checkpointLocationX = 1.02f; //defualt values for first room and testing
-    private float checkpointLocationY = 1.83f;
     private Vector2 respawnLocation;
+    private bool respawnGravityUp = false;
 
     // Start is called before the first frame update
     void Start()
@@ -30,9 +33,11 @@ public class movement : MonoBehaviour
         eventPublisher.OnD += GoRight;
         eventPublisher.OnSpace += JumpAction;
         eventPublisher.OnStop += noMove;
+        groundDown.touchDown += onTouchDown;
+        groundUp.touchUp += onTouchUp;
 
-       // eventPublisher.Checkpoint += getCheckpoint;
-     //   eventPublisher.Checkpoint += goCheckpoint;
+        // eventPublisher.Checkpoint += getCheckpoint;
+        //   eventPublisher.Checkpoint += goCheckpoint;
     }
 
     // Update is called once per frame
@@ -40,6 +45,8 @@ public class movement : MonoBehaviour
     {
 
     }
+
+    //for testing
     void PrintWasd(object sender, playerInput.OnWasdPressedEventArgs e)
     {
         if (type == 0)
@@ -60,12 +67,24 @@ public class movement : MonoBehaviour
 
     //all of main movment
     void GravUp(object sender, EventArgs e) {
-        rb2d.gravityScale = -1;
-        GravityUp = true;
+
+        if (GravityUp == false)
+        {
+
+            rb2d.gravityScale = -1;
+            GravityUp = true;
+            Debug.Log("grav set to up");
+        }
     }
     void GravDown(object sender, EventArgs e) {
-        rb2d.gravityScale = 1;
-        GravityUp = false;
+
+        if (GravityUp == true)
+        {
+
+            rb2d.gravityScale = 1;
+            GravityUp = false;
+            Debug.Log("grav set to down");
+        }
     }
     void GoLeft(object sender, EventArgs e) {
         //A
@@ -81,37 +100,71 @@ public class movement : MonoBehaviour
     {
         rb2d.velocity = new Vector2(0, rb2d.velocity.y);
     }
-    void JumpAction(object sender, EventArgs e) { 
-    
+    void JumpAction(object sender, EventArgs e) {
+        if (GravityUp == false)
+        {
+            rb2d.velocity = new Vector2(rb2d.velocity.x, 1 * jumpPower);
+        } else
+        {
+            rb2d.velocity = new Vector2(rb2d.velocity.x, -1 * jumpPower);
+        }
     }
 
 
-    /*
-        void getCheckpoint(object sender, EventArgs x, EventArgs y)
-        {
-            checkpointLocationX = x;
-            checkpointLocationY = y;
-        }
-        void goCheckpoint(object sender, EventArgs e)
-        {
 
-        } */
-
-
+    //core triggers and coliders
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("KillBox"))
         {
             Debug.Log("Player died! Teleport to " + respawnLocation);
 
-            //dont forget to change/reset gravity
-            //just save the gravity and then save it to what is at the moment 
+            //correct gravity first
+            if (respawnGravityUp == false)
+            {
+                GravityUp = false;
+                rb2d.gravityScale = 1;
+            }
+            else
+            {
+                GravityUp = true;
+                rb2d.gravityScale = -1;
+            }
+            //then teleport
+            rb2d.transform.position = respawnLocation;
+
         }
         if (other.CompareTag("Checkpoint"))
         {
            // Debug.Log("new checkpoint");
             respawnLocation = other.transform.position;
             Debug.Log("new checkpoint at " + respawnLocation);
+            if (GravityUp == false)
+            {
+                respawnGravityUp = false;
+            } else
+            {
+                respawnGravityUp = true;
+            }
+            Debug.Log("new checkpoint at " + respawnLocation + " with reversed gravity set to " + respawnGravityUp);
+        }
+    }
+    void onTouchDown(object sender, EventArgs e)
+    {
+        Debug.Log("colision on DOWN side");
+        if (GravityUp == false) {
+            jumpCount = 2;
+            flipCount = 2;
+            Debug.Log("movement restored by DOWN");
+        }
+    }
+    void onTouchUp(object sender, EventArgs e)
+    {
+        Debug.Log("colision on UP side");
+        if (GravityUp == true) {
+            jumpCount = 2;
+            flipCount = 2;
+            Debug.Log("movement restored by UP");
         }
     }
 }

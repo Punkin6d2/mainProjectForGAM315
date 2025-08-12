@@ -138,7 +138,7 @@ public class playerInput : MonoBehaviour
         {
             // Debug.Log("space pressed");
             OnSpacePressed?.Invoke(this, EventArgs.Empty);
-
+            OnSpace?.Invoke(this, EventArgs.Empty);
             if (GravityUp == false) { 
             //normal gravity
             
@@ -151,24 +151,26 @@ public class playerInput : MonoBehaviour
         //Gravity up
         if (Input.GetKeyDown(KeyCode.W))
         {
-           if (GravityUp == false) {
+            OnW?.Invoke(this, EventArgs.Empty);
+           /* if (GravityUp == false) {
                 //code
                 GravityUp = true;
                 OnW?.Invoke(this, EventArgs.Empty);
             } else {
             //do nothing
-            }
+            } */
         }
         //Gravity down
         if (Input.GetKeyDown(KeyCode.S))
         {
-           if (GravityUp == false) {
+            OnS?.Invoke(this, EventArgs.Empty);
+          /*  if (GravityUp == false) {
             //do nothing
             } else {
                 //code
                 GravityUp = false;
                 OnS?.Invoke(this, EventArgs.Empty);
-            }
+            } */
         }
 
         //move left
