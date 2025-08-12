@@ -11,7 +11,7 @@ public class movement : MonoBehaviour
     [SerializeField] groundCheckUp groundUp;
     [SerializeField] int type;
     private float speed = 5;
-    private float jumpPower = 8;
+    private float jumpPower = 11;
     private bool GravityUp = false;
     private int jumpCount = 2;
     private int flipCount = 2;
@@ -67,23 +67,29 @@ public class movement : MonoBehaviour
 
     //all of main movment
     void GravUp(object sender, EventArgs e) {
-
-        if (GravityUp == false)
+        if (flipCount >= 1)
         {
+            flipCount -= 1;
+            if (GravityUp == false)
+            {
 
-            rb2d.gravityScale = -1;
-            GravityUp = true;
-            Debug.Log("grav set to up");
+                rb2d.gravityScale = -1.7f;
+                GravityUp = true;
+                Debug.Log("grav set to up");
+            }
         }
     }
     void GravDown(object sender, EventArgs e) {
-
-        if (GravityUp == true)
+        if (flipCount >= 1)
         {
+            flipCount -= 1;
+            if (GravityUp == true)
+            {
 
-            rb2d.gravityScale = 1;
-            GravityUp = false;
-            Debug.Log("grav set to down");
+                rb2d.gravityScale = 1.7f;
+                GravityUp = false;
+                Debug.Log("grav set to down");
+            }
         }
     }
     void GoLeft(object sender, EventArgs e) {
@@ -101,12 +107,17 @@ public class movement : MonoBehaviour
         rb2d.velocity = new Vector2(0, rb2d.velocity.y);
     }
     void JumpAction(object sender, EventArgs e) {
-        if (GravityUp == false)
+        if (jumpCount >= 1)
         {
-            rb2d.velocity = new Vector2(rb2d.velocity.x, 1 * jumpPower);
-        } else
-        {
-            rb2d.velocity = new Vector2(rb2d.velocity.x, -1 * jumpPower);
+            jumpCount -= 1;
+            if (GravityUp == false)
+            {
+                rb2d.velocity = new Vector2(rb2d.velocity.x, 1 * jumpPower);
+            }
+            else
+            {
+                rb2d.velocity = new Vector2(rb2d.velocity.x, -1 * jumpPower);
+            }
         }
     }
 
@@ -123,12 +134,12 @@ public class movement : MonoBehaviour
             if (respawnGravityUp == false)
             {
                 GravityUp = false;
-                rb2d.gravityScale = 1;
+                rb2d.gravityScale = 1.7f;
             }
             else
             {
                 GravityUp = true;
-                rb2d.gravityScale = -1;
+                rb2d.gravityScale = -1.7f;
             }
             //then teleport
             rb2d.transform.position = respawnLocation;
