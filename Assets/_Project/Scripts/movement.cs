@@ -10,7 +10,7 @@ public class movement : MonoBehaviour
     [SerializeField] groundCheckDown groundDown;
     [SerializeField] groundCheckUp groundUp;
     [SerializeField] int type;
-    private float speed = 5;
+    private float speed = 8;
     private float jumpPower = 11;
     private bool GravityUp = false;
     private int jumpCount = 2;
