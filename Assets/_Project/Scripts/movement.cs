@@ -145,6 +145,7 @@ public class movement : MonoBehaviour
             }
             //then teleport
             rb2d.transform.position = respawnLocation;
+            rb2d.velocity = new Vector2(0, 0);
 
         }
         if (other.CompareTag("Checkpoint"))
