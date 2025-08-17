@@ -35,6 +35,8 @@ public class movement : MonoBehaviour
         eventPublisher.OnStop += noMove;
         groundDown.touchDown += onTouchDown;
         groundUp.touchUp += onTouchUp;
+        groundDown.SpringDownWithEventArgs += springDownHit;
+        groundUp.SpringUpWithEventArgs += springUpHit;
 
         // eventPublisher.Checkpoint += getCheckpoint;
         //   eventPublisher.Checkpoint += goCheckpoint;
@@ -159,6 +161,16 @@ public class movement : MonoBehaviour
             }
             Debug.Log("new checkpoint at " + respawnLocation + " with reversed gravity set to " + respawnGravityUp);
         }
+    }
+    void springDownHit(object sender, groundCheckDown.SpringDownEventArgs e)
+    {
+        Debug.Log("spring value reveved is " + e.springPower);
+        rb2d.velocity = new Vector2(rb2d.velocity.x, e.springPower);
+    }
+    void springUpHit(object sender, groundCheckUp.SpringUpEventArgs e)
+    {
+        Debug.Log("spring value reveved is " + e.springPower);
+        rb2d.velocity = new Vector2(rb2d.velocity.x, -e.springPower);
     }
     void onTouchDown(object sender, EventArgs e)
     {

@@ -8,6 +8,9 @@ TagManager:
   - Checkpoint
   - Ground
   - CamMover
+  - Spring
+  - upSensor
+  - downSensor
   layers:
   - Default
   - TransparentFX
