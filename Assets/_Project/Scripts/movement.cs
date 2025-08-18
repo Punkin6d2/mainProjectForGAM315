@@ -206,6 +206,17 @@ public class movement : MonoBehaviour
     {
         Debug.Log("spring value reveved is " + e.springPower);
         rb2d.velocity = new Vector2(rb2d.velocity.x, -e.springPower);
+        //set flips and jumps to at least 1
+        if (flipCount <= 0)
+        {
+            Debug.Log("flipCount is 0, setting to 1");
+            flipCount = 1;
+        }
+        if (jumpCount <= 0)
+        {
+            Debug.Log("jumpCount is 0, setting to 1");
+            jumpCount = 1;
+        }
     }
     //touch ground
     void onTouchDown(object sender, EventArgs e)

@@ -31,10 +31,7 @@ public class springControls : MonoBehaviour
     {
         return springPower;
     }
-    void springHitD()
-    {
-
-    }
+   
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("downSensor"))
