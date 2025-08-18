@@ -21,8 +21,14 @@ public class playerInput : MonoBehaviour
         public string PressedKey;
 
     }
-
-
+    public event EventHandler<OnWasdPressedEventArgs> OnWasdPressedWithEventArgs;
+    /*
+     * public class showFlipEventArgs : EventArgs
+    { 
+        public bool currentGrav;
+    }
+    public event EventHandler<showFlipEventArgs> showFlipWithEventArgs;
+    */
 
     //main events being used
     public event EventHandler OnW;
@@ -39,7 +45,7 @@ public class playerInput : MonoBehaviour
     }
 
     // Update is called once per frame
-    public event EventHandler<OnWasdPressedEventArgs> OnWasdPressedWithEventArgs;
+    
     void Update()
     {
         //all 3 "get keys" are here for animations in the fucture
