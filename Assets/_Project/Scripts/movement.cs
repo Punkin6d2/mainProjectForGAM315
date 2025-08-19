@@ -35,7 +35,7 @@ public class movement : MonoBehaviour
         public int flipsUI;
     }
     public event EventHandler<UIEventArgs> UIWithEventArgs;
-
+    // UIWithEventArgs?.Invoke(this, new UIEventArgs {jumpsUI = jumpCount, flipsUI = flipCount});
 
     // Start is called before the first frame update
     void Start()
@@ -56,8 +56,7 @@ public class movement : MonoBehaviour
         groundDown.SpringDownWithEventArgs += springDownHit;
         groundUp.SpringUpWithEventArgs += springUpHit;
 
-        // eventPublisher.Checkpoint += getCheckpoint;
-        //   eventPublisher.Checkpoint += goCheckpoint;
+        UIWithEventArgs?.Invoke(this, new UIEventArgs { jumpsUI = jumpCount, flipsUI = flipCount });
     }
 
     // Update is called once per frame
@@ -98,6 +97,7 @@ public class movement : MonoBehaviour
                 Debug.Log("grav set to up");
                 showFlipWithEventArgs?.Invoke(this, new showFlipEventArgs { currentGrav = GravityUp });
             }
+            UIWithEventArgs?.Invoke(this, new UIEventArgs { jumpsUI = jumpCount, flipsUI = flipCount });
         }
     }
     void GravDown(object sender, EventArgs e) {
@@ -112,6 +112,7 @@ public class movement : MonoBehaviour
                 Debug.Log("grav set to down");
                 showFlipWithEventArgs?.Invoke(this, new showFlipEventArgs { currentGrav = GravityUp });
             }
+            UIWithEventArgs?.Invoke(this, new UIEventArgs { jumpsUI = jumpCount, flipsUI = flipCount });
         }
     }
     void GoLeft(object sender, EventArgs e) {
@@ -140,6 +141,7 @@ public class movement : MonoBehaviour
             {
                 rb2d.velocity = new Vector2(rb2d.velocity.x, -1 * jumpPower);
             }
+            UIWithEventArgs?.Invoke(this, new UIEventArgs { jumpsUI = jumpCount, flipsUI = flipCount });
         }
     }
 
@@ -201,6 +203,7 @@ public class movement : MonoBehaviour
             Debug.Log("jumpCount is 0, setting to 1");
             jumpCount = 1;
         }
+        UIWithEventArgs?.Invoke(this, new UIEventArgs { jumpsUI = jumpCount, flipsUI = flipCount });
     }
     void springUpHit(object sender, groundCheckUp.SpringUpEventArgs e)
     {
@@ -217,6 +220,7 @@ public class movement : MonoBehaviour
             Debug.Log("jumpCount is 0, setting to 1");
             jumpCount = 1;
         }
+        UIWithEventArgs?.Invoke(this, new UIEventArgs { jumpsUI = jumpCount, flipsUI = flipCount });
     }
     //touch ground
     void onTouchDown(object sender, EventArgs e)
@@ -226,6 +230,7 @@ public class movement : MonoBehaviour
             jumpCount = 2;
             flipCount = 2;
             Debug.Log("movement restored by DOWN");
+            UIWithEventArgs?.Invoke(this, new UIEventArgs { jumpsUI = jumpCount, flipsUI = flipCount });
         }
     }
     void onTouchUp(object sender, EventArgs e)
@@ -235,6 +240,7 @@ public class movement : MonoBehaviour
             jumpCount = 2;
             flipCount = 2;
             Debug.Log("movement restored by UP");
+            UIWithEventArgs?.Invoke(this, new UIEventArgs { jumpsUI = jumpCount, flipsUI = flipCount });
         }
     }
 }

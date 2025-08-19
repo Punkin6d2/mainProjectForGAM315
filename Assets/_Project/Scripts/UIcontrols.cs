@@ -32,7 +32,7 @@ public class UIcontrols : MonoBehaviour
         
     }
     void UIUpdate(object sender, movement.UIEventArgs e)
-    { 
-
+    {
+        UIChangeWithEventArgs?.Invoke(this, new UIChangeEventArgs { jumpsUI = e.jumpsUI, flipsUI = e.flipsUI });
     }
 }
