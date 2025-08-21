@@ -6,29 +6,7 @@ using System;
 
 public class playerInput : MonoBehaviour
 {
-    public event EventHandler OnSpacePressed;
 
-    public class OnSpacePressedEventArgs : EventArgs
-    {
-
-    }
-
-    public event EventHandler OnWasdPressed;
-
-    public class OnWasdPressedEventArgs : EventArgs
-    {
-
-        public string PressedKey;
-
-    }
-    public event EventHandler<OnWasdPressedEventArgs> OnWasdPressedWithEventArgs;
-    /*
-     * public class showFlipEventArgs : EventArgs
-    { 
-        public bool currentGrav;
-    }
-    public event EventHandler<showFlipEventArgs> showFlipWithEventArgs;
-    */
 
     //main events being used
     public event EventHandler OnW;
@@ -37,8 +15,7 @@ public class playerInput : MonoBehaviour
     public event EventHandler OnD;
     public event EventHandler OnStop;
     public event EventHandler OnSpace;
-    public bool GravityUp = false;
-    public event EventHandler onR;
+    public event EventHandler OnR;
     void Start()
     {
 
@@ -142,48 +119,26 @@ public class playerInput : MonoBehaviour
         //jump
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            // Debug.Log("space pressed");
-            OnSpacePressed?.Invoke(this, EventArgs.Empty);
             OnSpace?.Invoke(this, EventArgs.Empty);
-            if (GravityUp == false) { 
-            //normal gravity
-            
-            } else {
-            //reversed gravity
-
-            }
         }
 
         //Gravity up
         if (Input.GetKeyDown(KeyCode.W))
         {
             OnW?.Invoke(this, EventArgs.Empty);
-           /* if (GravityUp == false) {
-                //code
-                GravityUp = true;
-                OnW?.Invoke(this, EventArgs.Empty);
-            } else {
-            //do nothing
-            } */
         }
         //Gravity down
         if (Input.GetKeyDown(KeyCode.S))
         {
             OnS?.Invoke(this, EventArgs.Empty);
-          /*  if (GravityUp == false) {
-            //do nothing
-            } else {
-                //code
-                GravityUp = false;
-                OnS?.Invoke(this, EventArgs.Empty);
-            } */
         }
 
         //move left
         if (Input.GetKey(KeyCode.A))
         {
-            if (Input.GetKey(KeyCode.A) && Input.GetKeyUp(KeyCode.D)) {
-            //dont move
+            if (Input.GetKey(KeyCode.A) && Input.GetKeyUp(KeyCode.D)) 
+            {
+                //dont move if both pressed
             }
             else
             {
@@ -195,7 +150,7 @@ public class playerInput : MonoBehaviour
         {
             if (Input.GetKey(KeyCode.D) && Input.GetKeyUp(KeyCode.A))
             {
-                //dont move
+                //dont move if both pressed
             }
             else
             {
@@ -208,6 +163,10 @@ public class playerInput : MonoBehaviour
             OnStop?.Invoke(this, EventArgs.Empty);
         }
 
-
+        //reset/respwan
+        if (Input.GetKey(KeyCode.R))
+        {
+            OnR?.Invoke(this, EventArgs.Empty);
+        }
     }
 }

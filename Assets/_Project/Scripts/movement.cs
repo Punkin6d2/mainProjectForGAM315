@@ -9,9 +9,8 @@ public class movement : MonoBehaviour
     [SerializeField] playerInput eventPublisher;
     [SerializeField] groundCheckDown groundDown;
     [SerializeField] groundCheckUp groundUp;
-    [SerializeField] int type;
-    private float speed = 8;
-    private float jumpPower = 11;
+    private float speed = 7;
+    private float jumpPower = 9;
     private bool GravityUp = false;
     private int jumpCount = 2;
     private int flipCount = 2;
@@ -30,7 +29,6 @@ public class movement : MonoBehaviour
     public event EventHandler UI;
     public class UIEventArgs : EventArgs
     {
-        //public bool currentGravUI;
         public int jumpsUI;
         public int flipsUI;
     }
@@ -39,11 +37,7 @@ public class movement : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {
-        //eventPublisher.OnWasdPressed += PrintWasd;
-        eventPublisher.OnWasdPressedWithEventArgs += PrintWasd;
-        eventPublisher.OnSpacePressed += PrintSpace;
-       
+    {  
         rb2d = GetComponent<Rigidbody2D>();
         eventPublisher.OnW += GravUp;
         eventPublisher.OnA += GoLeft;
@@ -51,6 +45,7 @@ public class movement : MonoBehaviour
         eventPublisher.OnD += GoRight;
         eventPublisher.OnSpace += JumpAction;
         eventPublisher.OnStop += noMove;
+        eventPublisher.OnR += GoBack;
         groundDown.touchDown += onTouchDown;
         groundUp.touchUp += onTouchUp;
         groundDown.SpringDownWithEventArgs += springDownHit;
@@ -65,24 +60,7 @@ public class movement : MonoBehaviour
 
     }
 
-    //for testing
-    void PrintWasd(object sender, playerInput.OnWasdPressedEventArgs e)
-    {
-        if (type == 0)
-        {
-            //   Debug.Log("proof wasd works");
-            Debug.Log(e.PressedKey + " key pressed");
-
-        }
-    }
-    void PrintSpace(object sender, EventArgs e)
-    {
-        if (type == 1)
-        {
-            Debug.Log("Jumping");
-           // this.transform.Translate;
-        }
-    }
+    
 
     //all of main movment
     void GravUp(object sender, EventArgs e) {
@@ -117,12 +95,10 @@ public class movement : MonoBehaviour
     }
     void GoLeft(object sender, EventArgs e) {
         //A
-        //Debug.Log("going left");
         rb2d.velocity = new Vector2(-1 * speed, rb2d.velocity.y);
     }
     void GoRight(object sender, EventArgs e) {
         //D
-        //Debug.Log("going right");
         rb2d.velocity = new Vector2(1 * speed, rb2d.velocity.y);
     }
     void noMove(object sender, EventArgs e)
@@ -145,6 +121,31 @@ public class movement : MonoBehaviour
         }
     }
 
+    void GoBack(object sender, EventArgs e)
+    {
+        Debug.Log("Player died! Teleport to " + respawnLocation);
+
+        //correct gravity first
+        if (respawnGravityUp == false)
+        {
+            GravityUp = false;
+            rb2d.gravityScale = 1.7f;
+            showFlipWithEventArgs?.Invoke(this, new showFlipEventArgs { currentGrav = GravityUp });
+        }
+        else
+        {
+            GravityUp = true;
+            rb2d.gravityScale = -1.7f;
+            showFlipWithEventArgs?.Invoke(this, new showFlipEventArgs { currentGrav = GravityUp });
+        }
+        //then teleport
+        rb2d.transform.position = respawnLocation;
+        rb2d.velocity = new Vector2(0, 0);
+        jumpCount = 2;
+        flipCount = 2;
+        Debug.Log("movement restored by RESET DEATH");
+        UIWithEventArgs?.Invoke(this, new UIEventArgs { jumpsUI = jumpCount, flipsUI = flipCount });
+    }
 
 
     //core triggers and coliders
@@ -170,7 +171,10 @@ public class movement : MonoBehaviour
             //then teleport
             rb2d.transform.position = respawnLocation;
             rb2d.velocity = new Vector2(0, 0);
-
+            jumpCount = 2;
+            flipCount = 2;
+            Debug.Log("movement restored by DEATH");
+            UIWithEventArgs?.Invoke(this, new UIEventArgs { jumpsUI = jumpCount, flipsUI = flipCount });
         }
         if (other.CompareTag("Checkpoint"))
         {

@@ -9,8 +9,6 @@ public class UIcounters : MonoBehaviour
     [SerializeField] UIcontrols controler;
     [SerializeField] string type;
     [SerializeField] int value;
-    //public Material onMat;
-    //public Material offMat;
     private Material currentMat;
    
     // Start is called before the first frame update
@@ -23,8 +21,7 @@ public class UIcounters : MonoBehaviour
     void change(object sender, UIcontrols.UIChangeEventArgs e)
     {
         Debug.Log("UI got message");
-        //currentMat.color = Color.green;
-        //type
+ 
         if (type == "flip")
         {
             if (value <= e.flipsUI)

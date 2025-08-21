@@ -12,7 +12,6 @@ public class UIcontrols : MonoBehaviour
     public event EventHandler UIChange;
     public class UIChangeEventArgs : EventArgs
     {
-        //public bool currentGravUI;
         public int jumpsUI;
         public int flipsUI;
     }
@@ -20,7 +19,6 @@ public class UIcontrols : MonoBehaviour
 
     void Start()
     {
-       // Component fullUI = GetComponentInChildren;
         player.UIWithEventArgs += UIUpdate;
     }
 
